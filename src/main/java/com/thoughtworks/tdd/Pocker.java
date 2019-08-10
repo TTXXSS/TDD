@@ -43,22 +43,60 @@ public class Pocker {
         int[] countSameElement1 = getCountSameElement(initCountSameElement1,sortFirstCharcterGroup1);
         int[] countSameElement2 = getCountSameElement(initCountSameElement2,sortFirstCharcterGroup2);
 
-        for (int i = 0; i < countSameElement1.length; i++) {
-            System.out.print(countSameElement1[i]+" ");
-        }
-        for (int i = 0; i < countSameElement2.length; i++) {
-            System.out.print(countSameElement2[i]+" ");
-        }
         int indexOfMaxLengthOfSameElement1 = getIndexOfMaxLengthOfSameElement(countSameElement1);
         int indexOfMaxLengthOfSameElement2 = getIndexOfMaxLengthOfSameElement(countSameElement2);
 
         boolean isStraight1 =isStraight(sortFirstCharcterGroup1);
         boolean isStraight2 =isStraight(sortFirstCharcterGroup2);
 
-        if(isStraight1&&!isStraight2)  //判断是否是顺子
+        boolean isThreeWithTwo1 = isContainThreeSameElementsAndTwoElements(countSameElement1);
+        boolean isThreeWithTwo2 = isContainThreeSameElementsAndTwoElements(countSameElement2);
+
+        boolean isFourWithOne1 = isFourWithOne(countSameElement1);
+        boolean isFourWithOne2 = isFourWithOne(countSameElement2);
+
+        if(isFourWithOne1&&isFourWithOne2){    //判断两者是否都是四带一
+            int elementFromFourSameElements1 = getElementFromFourSameElements(countSameElement1
+                    ,sortFirstCharcterGroup1);
+            int elementFromFourSameElements2 = getElementFromFourSameElements(countSameElement2
+                    ,sortFirstCharcterGroup2);
+            if(elementFromFourSameElements1>elementFromFourSameElements2)
+                return s1;
+            else
+                return s2;
+        }
+
+        if(isFourWithOne1&&!isFourWithOne2){
             return s1;
-        if(!isStraight1&&isStraight2)
+        }
+        if(!isFourWithOne1&&isFourWithOne2){
             return s2;
+        }
+
+        if(isThreeWithTwo1&&isThreeWithTwo2){   //判断两者是否都是三带二
+            int ElementFromThreeSameElements1 = getElementFromThreeSameElements(countSameElement1
+                    ,sortFirstCharcterGroup1);
+            int ElementFromThreeSameElements2 = getElementFromThreeSameElements(countSameElement2
+                    ,sortFirstCharcterGroup2);
+            if(ElementFromThreeSameElements1>ElementFromThreeSameElements2)
+                return s1;
+            else
+                return s2;
+        }
+
+
+        if(isStraight1&&!isStraight2){     //判断是否是顺子
+            if(isThreeWithTwo2)    //判断是否含有3带2的字符串
+                return s2;
+            else
+                return s1;
+        }
+        if(!isStraight1&&isStraight2){
+            if(isThreeWithTwo1)
+                return s1;
+            else
+                return s2;
+        }
 
         if(countSameElement1[indexOfMaxLengthOfSameElement1]>countSameElement2[indexOfMaxLengthOfSameElement2]) //判断相同元素长度大小
             return s1;
@@ -136,5 +174,50 @@ public class Pocker {
         if(sortFirstCharcterGroup[sortFirstCharcterGroup.length-1]-sortFirstCharcterGroup[0]==4)
             return true;
         return false;
+    }
+
+    public boolean isContainThreeSameElementsAndTwoElements(int[] countSameElement){
+        boolean isWithThree = false;
+        boolean isWithTwo = false;
+        boolean isThreeWithTwo = false;
+        for(int i=0;i<countSameElement.length;i++){
+            if(countSameElement[i]==3){
+                isWithThree =true;
+            }
+            if(countSameElement[i]==2){
+                isWithTwo = true;
+            }
+        }
+        if(isWithThree&&isWithTwo)
+            isThreeWithTwo = true;
+        return isThreeWithTwo;
+    }
+
+    public boolean isFourWithOne(int[] countSameElement){
+        boolean isFourWithOne = false;
+        for (int i=0;i<countSameElement.length;i++){
+            if(countSameElement[i]==4){
+                isFourWithOne=true;
+            }
+        }
+        return isFourWithOne;
+    }
+
+    public int getElementFromThreeSameElements(int[] countSameElement,int[] sortFirstCharcterGroup){
+        for(int i=0;i<countSameElement.length;i++){
+            if(countSameElement[i]==3){
+                return sortFirstCharcterGroup[i];
+            }
+        }
+        return -1;
+    }
+
+    public int getElementFromFourSameElements(int[] countSameElement,int[] sortFirstCharcterGroup){
+        for(int i=0;i<countSameElement.length;i++){
+            if(countSameElement[i]==4){
+                return  sortFirstCharcterGroup[i];
+            }
+        }
+        return -1;
     }
 }
