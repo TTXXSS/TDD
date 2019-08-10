@@ -43,13 +43,29 @@ public class Pocker {
         int[] countSameElement1 = getCountSameElement(initCountSameElement1,sortFirstCharcterGroup1);
         int[] countSameElement2 = getCountSameElement(initCountSameElement2,sortFirstCharcterGroup2);
 
+        for (int i = 0; i < countSameElement1.length; i++) {
+            System.out.print(countSameElement1[i]+" ");
+        }
+        for (int i = 0; i < countSameElement2.length; i++) {
+            System.out.print(countSameElement2[i]+" ");
+        }
         int indexOfMaxLengthOfSameElement1 = getIndexOfMaxLengthOfSameElement(countSameElement1);
         int indexOfMaxLengthOfSameElement2 = getIndexOfMaxLengthOfSameElement(countSameElement2);
-        if(countSameElement1[indexOfMaxLengthOfSameElement1]>countSameElement2[indexOfMaxLengthOfSameElement2])
+
+        boolean isStraight1 =isStraight(sortFirstCharcterGroup1);
+        boolean isStraight2 =isStraight(sortFirstCharcterGroup2);
+
+        if(isStraight1&&!isStraight2)  //判断是否是顺子
+            return s1;
+        if(!isStraight1&&isStraight2)
+            return s2;
+
+        if(countSameElement1[indexOfMaxLengthOfSameElement1]>countSameElement2[indexOfMaxLengthOfSameElement2]) //判断相同元素长度大小
             return s1;
         if(countSameElement1[indexOfMaxLengthOfSameElement1]<countSameElement2[indexOfMaxLengthOfSameElement2])
             return s2;
-        for(int i=length1-1;i>=0;i--){
+
+        for(int i=length1-1;i>=0;i--){   //单纯判断两组数据最大元素的大小
                 if(i==0&&sortFirstCharcterGroup1[i]==sortFirstCharcterGroup2[i]){
                     return "平局";
                 }else if(sortFirstCharcterGroup1[i]==sortFirstCharcterGroup2[i]){
@@ -66,7 +82,7 @@ public class Pocker {
     private int getIndexOfMaxLengthOfSameElement(int[] countSameElement1) {
         int index =0;
         int max = countSameElement1[0];
-        for(int i=0;i<countSameElement1.length-1;i++){
+        for(int i=0;i<countSameElement1.length;i++){
             if(countSameElement1[i]>max){
                 max =countSameElement1[i];
                 index=i;
@@ -107,13 +123,18 @@ public class Pocker {
 
     public int[] getCountSameElement(int[] initCountSameElement,int[] myElementArray){
         int[] countSameElement =initCountSameElement;
-        for(int i=0;i<myElementArray.length;i++){
+        for(int i=0;i<myElementArray.length;i+=countSameElement[i]){
             for(int j=i+1;j<myElementArray.length;j++)
             if(myElementArray[i]==myElementArray[j]){
                 countSameElement[i]++;
-                i+=countSameElement[i]-1;
             }
         }
         return countSameElement;
+    }
+
+    public boolean isStraight(int[] sortFirstCharcterGroup){
+        if(sortFirstCharcterGroup[sortFirstCharcterGroup.length-1]-sortFirstCharcterGroup[0]==4)
+            return true;
+        return false;
     }
 }
