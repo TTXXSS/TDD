@@ -70,7 +70,7 @@ public class PockerTest {
         String largerResult = pocker.compareLager(pocker.getPocker1(),pocker.getPocker2());
         assertSame(largerResult,s1);
     }
-
+    
 
 
 
