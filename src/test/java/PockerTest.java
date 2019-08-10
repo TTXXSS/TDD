@@ -62,6 +62,16 @@ public class PockerTest {
         String largerResult = pocker.compareLager(pocker.getPocker1(),pocker.getPocker2());
         assertSame(largerResult,s2);
     }
+    @Test
+    public void should_return_2h_2d_2s_2c_3d_when_call_compareLarger_given_2h_2d_2s_2c_3d_and_2h_2d_2s_3c_3d() {
+        String s1 = "2h 2d 2s 2c 3d";
+        String s2 = "2h 2d 2s 3c 3d";
+        Pocker pocker = new Pocker(s1,s2);
+        String largerResult = pocker.compareLager(pocker.getPocker1(),pocker.getPocker2());
+        assertSame(largerResult,s1);
+    }
+
+
 
 
 }
