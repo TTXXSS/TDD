@@ -37,9 +37,42 @@ public class Pocker {
         int length1 = sortFirstCharcterGroup1.length;
         int length2 = sortFirstCharcterGroup2.length;
 
-        for(int i=0;i<length1;i++){
+        int[] initCountSameElement1 = getInitCountSameElement();
+        int[] initCountSameElement2 = getInitCountSameElement();
+
+        int[] countSameElement1 = getCountSameElement(initCountSameElement1,sortFirstCharcterGroup1);
+        int[] countSameElement2 = getCountSameElement(initCountSameElement2,sortFirstCharcterGroup2);
+
+        int indexOfMaxLengthOfSameElement1 = getIndexOfMaxLengthOfSameElement(countSameElement1);
+        int indexOfMaxLengthOfSameElement2 = getIndexOfMaxLengthOfSameElement(countSameElement2);
+        if(countSameElement1[indexOfMaxLengthOfSameElement1]>countSameElement2[indexOfMaxLengthOfSameElement2])
+            return s1;
+        if(countSameElement1[indexOfMaxLengthOfSameElement1]<countSameElement2[indexOfMaxLengthOfSameElement2])
+            return s2;
+        for(int i=length1-1;i>=0;i--){
+                if(i==0&&sortFirstCharcterGroup1[i]==sortFirstCharcterGroup2[i]){
+                    return "平局";
+                }else if(sortFirstCharcterGroup1[i]==sortFirstCharcterGroup2[i]){
+                    continue;
+                }else if(sortFirstCharcterGroup1[i]>sortFirstCharcterGroup2[i]){
+                    return s1;
+                }else{
+                    return s2;
+                }
+            }
+        return null;
+    }
+
+    private int getIndexOfMaxLengthOfSameElement(int[] countSameElement1) {
+        int index =0;
+        int max = countSameElement1[0];
+        for(int i=0;i<countSameElement1.length-1;i++){
+            if(countSameElement1[i]>max){
+                max =countSameElement1[i];
+                index=i;
+            }
         }
-        return sortFirstCharcterGroup1[length1-1]>sortFirstCharcterGroup2[length2-1]?s1:s2;
+        return index;
     }
 
     public int[] getFirstCharacterThenCombineToArray(String s){
@@ -64,5 +97,23 @@ public class Pocker {
     public int[] sortMyArray(int []myFirstCharacterArray){
         Arrays.sort(myFirstCharacterArray);
         return myFirstCharacterArray;
+    }
+    public int[] getInitCountSameElement(){
+        int[] countSameElement = new int[5];
+        for(int i=0;i<5;i++)
+            countSameElement[i]=1;
+        return countSameElement;
+    }
+
+    public int[] getCountSameElement(int[] initCountSameElement,int[] myElementArray){
+        int[] countSameElement =initCountSameElement;
+        for(int i=0;i<myElementArray.length;i++){
+            for(int j=i+1;j<myElementArray.length;j++)
+            if(myElementArray[i]==myElementArray[j]){
+                countSameElement[i]++;
+                i+=countSameElement[i]-1;
+            }
+        }
+        return countSameElement;
     }
 }
